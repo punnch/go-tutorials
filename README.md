@@ -27,7 +27,7 @@ tutorials/
 
 ## ⚙️ Usage
 1. Navigate to a lesson or homework folder  
-2. Open the Go files in your preferred editor (VS Code, GoLand, etc.)  
+2. Open the Go files in your preferred editor
 3. Run the code using:
 ```bash
 go run <filename>.go
@@ -38,10 +38,10 @@ go run <filename>.go
 ## 💡 Notes
 - All code is typed manually while following tutorials ✍️  
 - Some files include small improvements or additional comments  
-- This repository is for **personal learning and reference only**
+- This repository is for **personal learning**
 
 ---
 
 ## 📬 Contact
-- GitHub: [https://github.com/punnch/go-tutorials](https://github.com/punnch/go-tutorials)  
-- Email: punnchxd@example.com
+- GitHub: [Punnch](https://github.com/punnch)
+- Email: punnchxd@gmail.com
