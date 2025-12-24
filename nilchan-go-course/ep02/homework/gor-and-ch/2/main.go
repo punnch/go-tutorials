@@ -37,7 +37,7 @@ func main() {
 	}
 
 	for range 3 {
-		val += <-ch
+		val = <-ch
 		slice = append(slice, val)
 	}
 
