@@ -1,6 +1,6 @@
 # 🚀 Go Tutorials Collection
 ## 📖 Description
-This repository contains Go code while following video tutorials
+This repository contains Go code while following video tutorials.
 This repository is for **personal learning**
 
 ---
@@ -19,5 +19,4 @@ tutorials/
 ---
 
 ## 📬 Contact
-- GitHub: [github.com/punnch](https://github.com/punnch)
-- Email: punnchxd@gmail.com
+Email: punnchxd@gmail.com
