@@ -1,7 +1,7 @@
 # 🚀 Go Tutorials Collection
 ## 📖 Description
-This repository contains Go code while following video tutorials.
 This repository is for **personal learning**
+It contains Go code while following video tutorials.
 
 ---
 
