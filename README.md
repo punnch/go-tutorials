@@ -43,5 +43,5 @@ go run <filename>.go
 ---
 
 ## 📬 Contact
-- GitHub: [Punnch](https://github.com/punnch)
+- GitHub: [github.com/punnch](https://github.com/punnch)
 - Email: punnchxd@gmail.com
