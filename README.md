@@ -7,14 +7,18 @@
 
 ## 📂 Folder Structure
 ```
-tutorials/
+go-tutorials/
+    head-first-go/
+        📝homework/         - Book exercises
+        📘lesson-code/      - Book lesson code
+        
     nilchan-go-course/
         ep01/
-            📘 lesson-code/   - Code typed along the video tutorials
-            📝 homework/      - Exercises from the course
+            📝homework/      - Course exercises 
+            📘lesson-code/   - Video lesson code
         ep02/
-            📘 lesson-code/
-            📝 homework/
+            📝homework/
+            📘lesson-code/
 ```
 ---
 
