@@ -7,7 +7,7 @@ import (
 )
 
 func randomSleep() int {
-	randomNum := rand.Intn(10) + 1
+	randomNum := 1 + rand.Intn(10)
 	miliseconds := randomNum * 100
 	time.Sleep(time.Duration(miliseconds) * time.Millisecond)
 
