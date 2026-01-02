@@ -11,21 +11,12 @@
 
 ``` bash
 go-tutorials/
-    head-first-go/
-        📝homework/         - Book exercises
-        📘lesson-code/      - Book lesson code
+    <resource-name>/
+        📝homework/     - Resourse exercises
+        📘lesson/       - Resource lesson code
         
-    nilchan-go-course/
-        ep01/
-            📝homework/      - Course exercises 
-            📘lesson-code/   - Video lesson code
-        ep02/
-            📝homework/
-            📘lesson-code/
 ```
 
 ---
 
-## 📬 Contact
-
-Email: <punnchxd@gmail.com>
+## I love green, btw (and arch TOO)
