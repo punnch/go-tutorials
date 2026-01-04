@@ -16,19 +16,19 @@ func postman(wg *sync.WaitGroup, name string) {
 }
 
 func main() {
-	wg := sync.WaitGroup{}
+	wg := &sync.WaitGroup{}
 
 	// 1
 	wg.Add(1)
-	go postman(&wg, "'Новости'")
+	go postman(wg, "'Новости'")
 
 	// 2
 	wg.Add(1)
-	go postman(&wg, "'Бравл старс'")
+	go postman(wg, "'Бравл старс'")
 
 	// 3
 	wg.Add(1)
-	go postman(&wg, "'Go'")
+	go postman(wg, "'Go'")
 
 	wg.Wait()
 
