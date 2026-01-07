@@ -10,9 +10,9 @@ import (
 func gardener(wg *sync.WaitGroup, n int) {
 	defer wg.Done()
 
-	fmt.Println("Я огородник", n, "начинаю полив...")
+	fmt.Println("I'm gardener", n, "start pouring of plants...")
 	time.Sleep(time.Duration(500+rand.Intn(501)) * time.Millisecond)
-	fmt.Println("Я огородник", n, "полив закончил!")
+	fmt.Println("I'm gardener", n, "end pouring!")
 }
 
 func main() {
@@ -32,5 +32,5 @@ func main() {
 	wg.Wait()
 
 	fmt.Println("-----------------------------")
-	fmt.Println("Огородники закончили свою работу!")
+	fmt.Println("Gardeners are done!")
 }

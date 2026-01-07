@@ -11,7 +11,7 @@ func foo(ctx context.Context, n int) {
 	for {
 		select {
 		case <-ctx.Done():
-			fmt.Println("Foo", n, "завершилась!")
+			fmt.Println("Foo", n, "ended!")
 			return
 		default:
 			fmt.Println("Foo", n)
@@ -26,7 +26,7 @@ func boo(ctx context.Context, n int) {
 	for {
 		select {
 		case <-ctx.Done():
-			fmt.Println("Boo", n, "завершилась!")
+			fmt.Println("Boo", n, "ended!")
 			return
 		default:
 			fmt.Println("Boo", n)
@@ -55,5 +55,5 @@ func main() {
 	parentCancel()
 
 	time.Sleep(3 * time.Second)
-	fmt.Println("main завершился!")
+	fmt.Println("main ended!")
 }

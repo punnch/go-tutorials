@@ -5,12 +5,12 @@ import (
 	"study/figures/methods"
 )
 
-// 1. Каждая фигура имеет свои функции для площади и периметра
-// - возвращает float64
+// 1. Each figure has functions Area() and Perim()
+// - return float64
 
-// 2. Взаимодействие через модуль
-// - в модуле интерфейс
-// - у модуля функция для вывода площади и периметра
+// 2. Module interaction
+// - interface is in module
+// - module has function to Print area and perimiter
 
 func main() {
 	rect := methods.Rect{Height: 10, Width: 4}
