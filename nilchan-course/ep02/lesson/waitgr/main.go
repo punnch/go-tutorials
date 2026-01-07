@@ -24,7 +24,7 @@ func main() {
 
 	// 2
 	wg.Add(1)
-	go postman(wg, "'Brawls stars'")
+	go postman(wg, "'Brawl stars'")
 
 	// 3
 	wg.Add(1)
