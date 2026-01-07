@@ -3,13 +3,13 @@ package main
 import "fmt"
 
 type Dog struct {
-	// 1. Имя собаки
+	// 1. Dog name
 	Name string
 
-	// 2. Рейтинг от судий собаки
+	// 2. Dog rating
 	Rating float64
 
-	// 3. Уважение к судьям
+	// 3. Respect to others
 	Rep bool
 }
 
@@ -35,7 +35,7 @@ func main() {
 	}
 
 	fmt.Println("------------")
-	fmt.Println("До оценки:", dogArr)
+	fmt.Println("Before evaluation:", dogArr)
 	fmt.Println("")
 
 	for i := 0; i < len(dogArr); i++ {
@@ -45,6 +45,6 @@ func main() {
 	}
 
 	fmt.Println("------------")
-	fmt.Println("После:", dogArr)
+	fmt.Println("After:", dogArr)
 	fmt.Println("")
 }

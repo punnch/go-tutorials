@@ -67,26 +67,26 @@ func DeleteTasks(title string) string {
 			return ""
 		}
 	}
-	return "Задача с таким заголовком не найдена!"
+	return "No task found with the provided title!"
 }
 
 func ChangeStatus(title string) string {
 	for _, task := range db.Tasks {
 		if task.Title == title {
-			// Ставим противоположный статус
+			// toggle
 			task.Done = !task.Done
 			return ""
 		}
 	}
-	return "Задача с таким заголовком не найдена!"
+	return "No task found with the provided title!"
 }
 
 func Help() {
-	fmt.Println("- help — позволяет узнать доступные команды и их формат")
-	fmt.Println("- add {заголовок задачи 1 слово} {текст задачи 1-неск. слов} — позволяет добавлять задачи в список задач")
-	fmt.Println("- list — позволяет получить полный список всех задач")
-	fmt.Println("- del {заголовок существующей задачи} — позволяет удалить задачу по её заголовку")
-	fmt.Println("- done {заголовок существующей задачи} — позволяет отметить задачу как выполненную")
-	fmt.Println("- events — позволяет получить список всех событий")
-	fmt.Println("- exit — позволяет завершить выполнение программы")
+	fmt.Println("- help — show commands")
+	fmt.Println("- add {title (1 word)} {description} — make a note")
+	fmt.Println("- list — get uncompleted notes")
+	fmt.Println("- del {title} — delete a note by title")
+	fmt.Println("- done {title} — switch status to 'done'")
+	fmt.Println("- events — get all events")
+	fmt.Println("- exit — close the sessions")
 }

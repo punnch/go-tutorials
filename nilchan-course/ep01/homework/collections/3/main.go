@@ -3,42 +3,42 @@ package main
 import "fmt"
 
 func main() {
-	// 1 мапа str-int
+	// 1 str-int map
 	school := map[string]int{
-		"Дима":   5,
-		"Антон":  5,
-		"Герман": 2,
-		"Кампот": 0,
+		"Dima":   5,
+		"Anton":  5,
+		"German": 2,
+		"Cumpot": 0,
 	}
 
-	// 2 мапа str-bool через make
+	// 2 str-bool map created via make()
 	hasWork := make(map[string]bool)
 
-	hasWork["Дима"] = true
-	hasWork["Антон"] = true
-	hasWork["Герман"] = true
-	hasWork["Кампот"] = false
+	hasWork["Dima"] = true
+	hasWork["Anton"] = true
+	hasWork["German"] = true
+	hasWork["Cumpot"] = false
 
-	// Операции:
-	// 1. Удаление элементов
-	fmt.Println("До:", school)
+	// Operations:
+	// 1. Delete element
+	fmt.Println("Before:", school)
 
-	delete(school, "Герман")
+	delete(school, "German")
 
-	fmt.Println("После:", school)
+	fmt.Println("After:", school)
 
-	// 2. Является ли полученное значение значеним по-умолчанию?
-	c, ok := hasWork["Кампот"]
+	// 2. Check default value
+	c, ok := hasWork["Cumpot"]
 	if !ok {
-		fmt.Println("Имени нет в базе данных!")
+		fmt.Println("No such name in database!")
 		return
 	}
 
-	fmt.Println("Имя есть в базе данных...")
+	fmt.Println("Name is in database...")
 
 	if c {
-		fmt.Println("Имя имеет true значение, Вы работаете!")
+		fmt.Println("Name has true value, You work!")
 	} else {
-		fmt.Println("Имя имеет false значение, Вы не работаете(")
+		fmt.Println("Name has false value, You don't work:(")
 	}
 }

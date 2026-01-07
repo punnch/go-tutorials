@@ -11,7 +11,7 @@ func main() {
 		"Y3": 650,
 	}
 	fmt.Println("------------------------------------")
-	fmt.Println("Места с парковкой меньше 500 рублей:")
+	fmt.Println("Parking spaces with cost less than 500 rubles:")
 
 	for i, v := range parking {
 		if v < 500 {
@@ -20,7 +20,7 @@ func main() {
 	}
 	fmt.Println("")
 	fmt.Println("------------------------------------")
-	fmt.Println("Места с парковкой больше 900 рублей (10% скидка!):")
+	fmt.Println("Parking spaces with cost greater than 900 rubles (10 percent discount)")
 
 	for i, v := range parking {
 		if v > 900 {

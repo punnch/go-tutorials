@@ -15,7 +15,7 @@ type User struct {
 func main() {
 	arr := [5]User{
 		User{
-			Name:    "Серега",
+			Name:    "Serega",
 			Rating:  9.0,
 			Premium: false,
 		},
@@ -25,17 +25,17 @@ func main() {
 			Premium: true,
 		},
 		User{
-			Name:    "Назар",
+			Name:    "Nazar",
 			Rating:  3.1,
 			Premium: true,
 		},
 		User{
-			Name:    "Герман",
+			Name:    "German",
 			Rating:  0,
 			Premium: true,
 		},
 		User{
-			Name:    "Ярик",
+			Name:    "George",
 			Rating:  8.4,
 			Premium: false,
 		},
@@ -43,14 +43,14 @@ func main() {
 
 	// До
 	fmt.Println("--------")
-	fmt.Println("До:")
+	fmt.Println("Before:")
 	for i, v := range arr {
 		pp.Println(i, v)
 	}
 
 	// После
 	fmt.Println("--------")
-	fmt.Println("После:")
+	fmt.Println("After:")
 
 	// 1 вариант
 	for i := 0; i < len(arr); i++ {
@@ -61,19 +61,19 @@ func main() {
 	}
 
 	// 2 вариант
-	/* for i, v := range arr {
+	for i, v := range arr {
 		if v.Premium {
 			arr[i].Rating += 1
 			v.Rating += 1
 		}
 		pp.Println(i, v)
-	} */
+	}
 
 	// 3 вариант
-	/* for index, user := range arr {
+	for index, user := range arr {
 		if user.Premium {
 			arr[index].Rating += 1
 		}
 		pp.Println(index, arr[index])
-	} */
+	}
 }

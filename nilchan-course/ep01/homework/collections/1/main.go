@@ -3,40 +3,40 @@ package main
 import "fmt"
 
 func main() {
-	// 1 массив int типа
+	// 1 int array
 	intArray := [3]int{16, 26, -4}
 
-	// 2 массив float типа
+	// 2 float array
 	floatArray := [2]float64{3.25, 7.75}
 
-	// 3 массив boolean типа
+	// 3 boolean array
 	boolArray := [2]bool{true, false}
 
 	// 4 массив string типа
 	strArray := [3]string{"a", "b", "c"}
 
-	// Операции:
+	// Operations:
 
-	// 1.Получение элемента
+	// 1.Gettings of element
 	el := intArray[0]
-	fmt.Println("индекс 0:", el)
+	fmt.Println("index 0:", el)
 
-	// 2. Вывод на экран
+	// 2. Output
 	fmt.Println(floatArray)
 
-	// 3. Изменение отдельного элемента
+	// 3. Change element
 	fmt.Println("----")
-	fmt.Println("До:")
+	fmt.Println("Before:")
 	fmt.Println(boolArray[0])
 	fmt.Println("")
 
 	boolArray[0] = false
 
 	fmt.Println("----")
-	fmt.Println("После:")
+	fmt.Println("After:")
 	fmt.Println(boolArray[0])
 	fmt.Println("")
-	// 4. Массивы + циклы
+	// 4. Arrays + Loops
 
 	// 1)
 	for i := 0; i < 3; i++ {

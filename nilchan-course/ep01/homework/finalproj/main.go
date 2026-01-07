@@ -14,11 +14,11 @@ func main() {
 	var eventDesc string
 	scanner := bufio.NewScanner(os.Stdin)
 
-	fmt.Println("Добро пожаловать в ToDo!")
-	fmt.Print("(Чтобы получить список доступных команд, введите 'help')\n\n")
+	fmt.Println("Welcome in ToDo console app!")
+	fmt.Println("('help' - get list of available commands)")
 
 	for {
-		fmt.Print("Введите команду: ")
+		fmt.Print("Input command: ")
 
 		// Checking input ability
 		if ok := scanner.Scan(); !ok {
@@ -29,7 +29,7 @@ func main() {
 
 		fields := strings.Fields(text)
 		if len(fields) == 0 {
-			eventDesc = "Пустой запрос!"
+			eventDesc = "Empty query!"
 			fmt.Println(eventDesc)
 			crud.AddEvent("", eventDesc)
 			continue
@@ -44,18 +44,18 @@ func main() {
 
 		if cmd == "exit" {
 			if len(fields) != 1 {
-				eventDesc = "Неверный формат!"
+				eventDesc = "Error format!"
 				fmt.Println(eventDesc)
 				crud.AddEvent(text, eventDesc)
 				continue
 			}
-			fmt.Println("Вы закрыли приложение")
+			fmt.Println("You closed app, have a good day!")
 			break
 		}
 
 		if cmd == "add" {
 			if len(fields) < 3 {
-				eventDesc = "Неверный формат!"
+				eventDesc = "Error format!"
 				fmt.Println(eventDesc)
 				crud.AddEvent(text, eventDesc)
 				continue
@@ -69,7 +69,7 @@ func main() {
 
 		if cmd == "del" {
 			if len(fields) != 2 {
-				eventDesc = "Неверный формат!"
+				eventDesc = "Error format!"
 				fmt.Println(eventDesc)
 				crud.AddEvent(text, eventDesc)
 				continue
@@ -88,7 +88,7 @@ func main() {
 
 		if cmd == "done" {
 			if len(fields) != 2 {
-				eventDesc = "Неверный формат!"
+				eventDesc = "Error format!"
 				fmt.Println(eventDesc)
 				crud.AddEvent(text, eventDesc)
 				continue
@@ -107,7 +107,7 @@ func main() {
 
 		if cmd == "list" {
 			if len(fields) != 1 {
-				eventDesc = "Неверный формат!"
+				eventDesc = "Error format!"
 				fmt.Println(eventDesc)
 				crud.AddEvent(text, eventDesc)
 				continue
@@ -121,7 +121,7 @@ func main() {
 
 		if cmd == "help" {
 			if len(fields) != 1 {
-				eventDesc = "Неверный формат!"
+				eventDesc = "Error format!"
 				fmt.Println(eventDesc)
 				crud.AddEvent(text, eventDesc)
 				continue
@@ -135,7 +135,7 @@ func main() {
 
 		if cmd == "events" {
 			if len(fields) != 1 {
-				eventDesc = "Неверный формат!"
+				eventDesc = "Error format!"
 				fmt.Println(eventDesc)
 				crud.AddEvent(text, eventDesc)
 				continue
@@ -147,7 +147,7 @@ func main() {
 			continue
 		}
 
-		eventDesc = "Передана неизвестная команда!"
+		eventDesc = "Unknown command!"
 		fmt.Println(eventDesc)
 		crud.AddEvent(text, eventDesc)
 	}

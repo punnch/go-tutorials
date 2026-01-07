@@ -5,7 +5,7 @@ import "fmt"
 func main() {
 	strSlice := make([]string, 0, 5)
 
-	fmt.Println("До:")
+	fmt.Println("Before:")
 	fmt.Println("len:", len(strSlice))
 	fmt.Println("cap:", cap(strSlice))
 
@@ -13,7 +13,7 @@ func main() {
 	strSlice = append(strSlice, "second")
 	strSlice = append(strSlice, "third")
 
-	fmt.Println("После:")
+	fmt.Println("After:")
 	fmt.Println("len:", len(strSlice))
 	fmt.Println("cap:", cap(strSlice))
 
