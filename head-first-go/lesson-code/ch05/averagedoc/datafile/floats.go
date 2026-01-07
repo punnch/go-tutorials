@@ -1,4 +1,4 @@
-// Пакет datafile позволяет читать данные с файлов
+// Package datafile reads data from files
 package datafile
 
 import (
@@ -7,19 +7,20 @@ import (
 	"strconv"
 )
 
-// GetFloats читает значение float64 из файла и возвращает float64 массив
+// GetFloats reads data from file and returns []float64
 func GetFloats(fileName string) ([]float64, error) {
 	numbers := []float64{}
 
 	file, err := os.Open(fileName)
 	if err != nil {
-		// возвращаем nil, т.к. пустой слайс ([]float64) == nil
+		// return nil because slice is nil
 		return nil, err
 	}
 
 	scanner := bufio.NewScanner(file)
 
-	// Пока scanner.Scan() true - сканируем, когда ошибка / конец файла - false
+	// While scanner.Scan() true - scan file
+	// if file's end or error encountered - false
 	for scanner.Scan() {
 		number, err := strconv.ParseFloat(scanner.Text(), 64)
 		if err != nil {
@@ -28,7 +29,7 @@ func GetFloats(fileName string) ([]float64, error) {
 		numbers = append(numbers, number)
 	}
 
-	// Закрываем файл, чтобы не засорять память
+	// Close file to save RAM
 	err = file.Close()
 	if err != nil {
 		return nil, err

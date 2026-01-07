@@ -12,8 +12,8 @@ func main() {
 	year := now.Year()
 	pastYear := year - 1
 
-	fmt.Println("Нынешний год:", year)
-	fmt.Println("Прошлый год:", pastYear)
+	fmt.Println("Current year:", year)
+	fmt.Println("Past year:", pastYear)
 
 	// 2 method instance
 	words := "Bu##y, what're you #oing?"

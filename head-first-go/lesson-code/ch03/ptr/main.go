@@ -4,7 +4,7 @@ package main
 import "fmt"
 
 func double(count *float64) {
-	// удваиваем через указатель
+	// double throw pointer
 	*count *= 2
 }
 
@@ -13,7 +13,7 @@ func main() {
 
 	fmt.Println("до:", count)
 
-	// принимает адресс переменной
+	// accepts varialbe address
 	double(&count)
 	fmt.Println("после:", count)
 }

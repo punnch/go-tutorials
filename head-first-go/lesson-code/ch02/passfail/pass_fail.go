@@ -13,14 +13,14 @@ func main() {
 	fmt.Print("Enter a grade: ")
 
 	reader := bufio.NewReader(os.Stdin)
-	// Сохраняет значение строки до определенного символа
-	input, err := reader.ReadString('\n') // Сохраняет все до перехода на новую строку
+	// Saves line value before certain symbol
+	input, err := reader.ReadString('\n') // Saves all before new line
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	input = strings.TrimSpace(input)            // Удаляет отступы в начале и в конче строки (/n в нашем случае)
-	grade, err := strconv.ParseFloat(input, 64) // Преобразовывает значение строки во float64
+	input = strings.TrimSpace(input)            // Deletes indentations
+	grade, err := strconv.ParseFloat(input, 64) // Converts string value to float64
 	if err != nil {
 		log.Fatal(err)
 	}

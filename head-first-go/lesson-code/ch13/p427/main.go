@@ -14,21 +14,21 @@ func reportNap(name string, delay int) {
 }
 
 func send(myChannel chan string) {
-	reportNap("sending goroutine", 2) // спит 2 сек, a main 5 сек -> вкл. быстрее
+	reportNap("sending goroutine", 2) // sleeps 2 seconds, main sleeps 5 seconds
 	fmt.Println("***sending value***")
-	myChannel <- "a" // отправил значение и ждет, пока main получит
+	myChannel <- "a" // returned a value and waits before main recieve
 	fmt.Println("***sending value***")
-	myChannel <- "b" // пока main не получит a, эта команда не выполнится
+	myChannel <- "b" // executes while main gets that value
 }
 
 func main() {
-	// планировщик бахает на рандом какую горутину запускать
+	// random goroutine execution
 	myChannel := make(chan string)
 	go send(myChannel)
-	// main - получающая горутина, выполняет команду, пока не выполнит - не получит
-	reportNap("receiving goroutine", 5) // спит 5 сек -> сенд горутина будет ждать
 
-	// main получает значение канала
+	reportNap("receiving goroutine", 5) // sleeps 5 senconds -> send goroutine will wait
+
+	// main gets values from channels
 	fmt.Println(<-myChannel)
 	fmt.Println(<-myChannel)
 }

@@ -1,4 +1,4 @@
-// Пакет datafile нужен для чтения файлов
+// Package datafile reads files
 package datafile
 
 import (
@@ -6,7 +6,7 @@ import (
 	"os"
 )
 
-// GetStrings читает каждую строку из .txt файла
+// GetStrings reads every line in .txt
 func GetStrings(filename string) ([]string, error) {
 	var lines []string
 

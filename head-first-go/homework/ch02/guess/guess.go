@@ -13,21 +13,20 @@ import (
 func main() {
 	random := rand.Intn(100) + 1
 	var counter int
-	fmt.Println(random)
 
-	fmt.Println("Я загадал число от 1 до 100")
-	fmt.Println("У тебя есть 10 попыток, чтобы отгадать")
+	fmt.Println("Guess the count from 1 to 100")
+	fmt.Println("You have 10 attempts!")
 
 	reader := bufio.NewReader(os.Stdin)
 
 	for {
 		if counter == 10 {
-			fmt.Println("К сожалению, ты не угадал число :(")
-			fmt.Println("Загаданное число -", random)
+			fmt.Println("You didn't guess the count:(")
+			fmt.Println("The guessed count -", random)
 		}
 
 		fmt.Println("------------------")
-		fmt.Print("Введите число: ")
+		fmt.Print("Input a number: ")
 
 		input, err := reader.ReadString('\n')
 		if err != nil {
@@ -41,16 +40,16 @@ func main() {
 		}
 
 		if guess == random {
-			fmt.Println("Ты угадал, загаданное число -", random, "!")
-			fmt.Println("Попыток потрачено:", counter+1)
+			fmt.Println("You guessed the count -", random, "!")
+			fmt.Println("Attempts spent:", counter+1)
 			return
 		}
 
 		if guess < random {
 			counter += 1
 			if counter != 10 {
-				fmt.Println("Загаданное число больше")
-				fmt.Println("Число попыток:", counter)
+				fmt.Println("The guessed count is greater")
+				fmt.Println("Attempt count:", counter)
 			}
 			continue
 		}
@@ -58,8 +57,8 @@ func main() {
 		if guess > random {
 			counter += 1
 			if counter != 10 {
-				fmt.Println("Загаданное число меньше")
-				fmt.Println("Число попыток:", counter)
+				fmt.Println("The guessed count is less")
+				fmt.Println("Attempt count:", counter)
 			}
 			continue
 		}

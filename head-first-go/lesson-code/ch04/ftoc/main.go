@@ -8,7 +8,7 @@ import (
 )
 
 func main() {
-	fmt.Print("Введите температуру в градусах Фарингейта: ")
+	fmt.Print("Input fahrenheit temperature: ")
 	fahrenheit, err := keyboard.GetFloat()
 	if err != nil {
 		log.Fatal(err)
@@ -16,5 +16,5 @@ func main() {
 
 	// converts celsius to fahrenheits if no error
 	celsius := (fahrenheit - 32) * 5 / 9
-	fmt.Printf("Температура в градусах цельсия: %.2f", celsius)
+	fmt.Printf("Calcius temperature: %.2f", celsius)
 }

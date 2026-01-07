@@ -21,5 +21,5 @@ func main() {
 
 	average := sum / float64(len(arr))
 
-	fmt.Printf("Среднее массива: %.2f", average)
+	fmt.Printf("Average: %.2f", average)
 }
