@@ -4,6 +4,7 @@ import (
 	"concurrency/miner"
 	"concurrency/postman"
 	"context"
+	"fmt"
 	"time"
 )
 
@@ -14,36 +15,42 @@ func main() {
 	minerCtx, minerCancel := context.WithCancel(context.Background())
 	postmanCtx, postmanCancel := context.WithCancel(context.Background())
 
-	coalTransferPoint := miner.MinerPool(minerCtx, 2)
-	mailTransfterPoint := postman.PostmanPool(postmanCtx, 2)
-
 	go func() {
 		time.Sleep(3 * time.Second)
 		minerCancel()
+		fmt.Println("--> MINER WORKING DAY ENDED!!! <--")
 	}()
 
 	go func() {
 		time.Sleep(6 * time.Second)
 		postmanCancel()
+		fmt.Println("--> POSTMAN WORKING DAY ENDED!!! <--")
 	}()
 
-	isMinerClosed := false
-	isPostmanClosed := false
+	coalTransferPoint := miner.MinerPool(minerCtx, 2)
+	mailTransfterPoint := postman.PostmanPool(postmanCtx, 2)
 
-	for !isPostmanClosed || !isMinerClosed {
+	isCoalClosed := false
+	isMailClosed := false
+
+	for !isCoalClosed || !isMailClosed {
 		select {
 		case c, ok := <-coalTransferPoint:
 			if !ok {
-				isMinerClosed = true
+				isCoalClosed = true
 				continue
 			}
 			coal += c
 		case m, ok := <-mailTransfterPoint:
 			if !ok {
-				isPostmanClosed = true
+				isMailClosed = true
 				continue
 			}
 			mails = append(mails, m)
 		}
 	}
+
+	fmt.Println("--------------")
+	fmt.Println("Coal:", coal)
+	fmt.Println("Mails:", len(mails))
 }

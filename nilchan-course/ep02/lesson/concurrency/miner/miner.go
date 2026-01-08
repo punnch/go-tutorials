@@ -17,18 +17,18 @@ func Miner(
 ) {
 	defer wg.Done()
 
-	select {
-	case <-ctx.Done():
-		fmt.Println("I'm miner:", n, "My work day is ended!")
-		return
-	default:
-		for {
+	for {
+		select {
+		case <-ctx.Done():
+			fmt.Println("I'm a miner:", n, "My work day is ended!")
+			return
+		default:
 			fmt.Println("I'm a miner:", n, "Start working...")
 			time.Sleep(time.Second)
 			fmt.Println("I'm a miner:", n, "Got coal:", power)
 
 			transferPoint <- power // send-only chan
-			fmt.Println("I'm a miner:", n, "Sent coal:", power)
+			fmt.Println("I'm a miner:", n, "Brought coal:", power)
 		}
 	}
 }

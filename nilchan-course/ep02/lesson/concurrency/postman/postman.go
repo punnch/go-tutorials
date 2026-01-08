@@ -3,7 +3,6 @@ package postman
 import (
 	"context"
 	"fmt"
-	"math/rand/v2"
 	"sync"
 	"time"
 )
@@ -18,15 +17,15 @@ func Postman(
 ) {
 	defer wg.Done()
 
-	select {
-	case <-ctx.Done():
-		fmt.Println("I'm a postman:", n, "My work day is ended!")
-		return
-	default:
-		for {
+	for {
+		select {
+		case <-ctx.Done():
+			fmt.Println("I'm a postman:", n, "My work day is ended!")
+			return
+		default:
 			fmt.Println("I'm a postman:", n, "Start working...")
 			time.Sleep(time.Second)
-			fmt.Println("I'm a postman:", n, "Went to the post office with mail:", mail)
+			fmt.Println("I'm a postman:", n, "Took a mail:", mail)
 
 			transferPoint <- mail
 			fmt.Println("I'm a postman:", n, "Brought a mail:", mail)
@@ -41,7 +40,7 @@ func PostmanPool(ctx context.Context, postmanCount int) <-chan string {
 
 	for i := 1; i <= postmanCount; i++ {
 		wg.Add(1)
-		go Postman(ctx, wg, mailTransfterPoint, i, postmanMail())
+		go Postman(ctx, wg, mailTransfterPoint, i, postmanMail(i))
 	}
 
 	go func() {
@@ -53,17 +52,18 @@ func PostmanPool(ctx context.Context, postmanCount int) <-chan string {
 }
 
 // postmanMail returns mail text
-func postmanMail() string {
+func postmanMail(mainNumber int) string {
 	pmail := map[int]string{
-		0: "Brawl stars news",
-		1: "New video of Punnch",
-		2: "Golang update",
-		3: "Machine Learning cource discount",
-		4: "AI will replace programmers",
-		5: "Breaking News",
+		1: "Brawl stars news",
+		2: "New video of Punnch",
+		3: "Golang update",
+		4: "Machine Learning cource discount",
+		5: "AI will replace programmers",
 	}
 
-	randomMail := rand.IntN(6)
+	if _, ok := pmail[mainNumber]; !ok {
+		return "Breaking News"
+	}
 
-	return pmail[randomMail]
+	return pmail[mainNumber]
 }
