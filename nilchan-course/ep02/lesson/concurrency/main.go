@@ -6,12 +6,14 @@ import (
 	"context"
 	"fmt"
 	"sync"
+	"sync/atomic"
 	"time"
 )
 
 func main() {
-	var coal int
+	var coal atomic.Int64
 	var mails []string
+	var mtx sync.Mutex
 
 	minerCtx, minerCancel := context.WithCancel(context.Background())
 	postmanCtx, postmanCancel := context.WithCancel(context.Background())
@@ -28,8 +30,8 @@ func main() {
 		fmt.Println("--> POSTMAN WORKDAY IS OVER!!! <--")
 	}()
 
-	coalTransferPoint := miner.MinerPool(minerCtx, 2)
-	mailTransfterPoint := postman.PostmanPool(postmanCtx, 2)
+	coalTransferPoint := miner.MinerPool(minerCtx, 6)
+	mailTransfterPoint := postman.PostmanPool(postmanCtx, 6)
 
 	wg := &sync.WaitGroup{}
 
@@ -37,7 +39,7 @@ func main() {
 	go func() {
 		defer wg.Done()
 		for v := range coalTransferPoint {
-			coal += v
+			coal.Add(int64(v))
 		}
 	}()
 
@@ -45,13 +47,18 @@ func main() {
 	go func() {
 		defer wg.Done()
 		for v := range mailTransfterPoint {
+			mtx.Lock()
 			mails = append(mails, v)
+			mtx.Unlock()
 		}
 	}()
 
 	wg.Wait()
 
-	fmt.Println("--------------")
-	fmt.Println("Coal:", coal)
+	fmt.Println("-----------------------")
+	fmt.Println("Coal:", coal.Load())
+
+	mtx.Lock()
 	fmt.Println("Mails:", len(mails))
+	mtx.Unlock()
 }
