@@ -5,6 +5,7 @@ import (
 	"concurrency/postman"
 	"context"
 	"fmt"
+	"sync"
 	"time"
 )
 
@@ -18,37 +19,37 @@ func main() {
 	go func() {
 		time.Sleep(3 * time.Second)
 		minerCancel()
-		fmt.Println("--> MINER WORKING DAY ENDED!!! <--")
+		fmt.Println("--> MINER WORKDAY IS OVER!!! <--")
 	}()
 
 	go func() {
 		time.Sleep(6 * time.Second)
 		postmanCancel()
-		fmt.Println("--> POSTMAN WORKING DAY ENDED!!! <--")
+		fmt.Println("--> POSTMAN WORKDAY IS OVER!!! <--")
 	}()
 
 	coalTransferPoint := miner.MinerPool(minerCtx, 2)
 	mailTransfterPoint := postman.PostmanPool(postmanCtx, 2)
 
-	isCoalClosed := false
-	isMailClosed := false
+	wg := &sync.WaitGroup{}
 
-	for !isCoalClosed || !isMailClosed {
-		select {
-		case c, ok := <-coalTransferPoint:
-			if !ok {
-				isCoalClosed = true
-				continue
-			}
-			coal += c
-		case m, ok := <-mailTransfterPoint:
-			if !ok {
-				isMailClosed = true
-				continue
-			}
-			mails = append(mails, m)
+	wg.Add(1)
+	go func() {
+		defer wg.Done()
+		for v := range coalTransferPoint {
+			coal += v
 		}
-	}
+	}()
+
+	wg.Add(1)
+	go func() {
+		defer wg.Done()
+		for v := range mailTransfterPoint {
+			mails = append(mails, v)
+		}
+	}()
+
+	wg.Wait()
 
 	fmt.Println("--------------")
 	fmt.Println("Coal:", coal)
