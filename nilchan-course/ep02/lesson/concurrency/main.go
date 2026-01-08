@@ -18,6 +18,8 @@ func main() {
 	minerCtx, minerCancel := context.WithCancel(context.Background())
 	postmanCtx, postmanCancel := context.WithCancel(context.Background())
 
+	initTime := time.Now()
+
 	go func() {
 		time.Sleep(3 * time.Second)
 		minerCancel()
@@ -56,6 +58,7 @@ func main() {
 	wg.Wait()
 
 	fmt.Println("-----------------------")
+	fmt.Println("Time:", time.Since(initTime))
 	fmt.Println("Coal:", coal.Load())
 
 	mtx.Lock()
