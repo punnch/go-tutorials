@@ -1,11 +1,12 @@
-package air
+package sensors
 
 import (
-	"concurrency/coordinates"
+	"concurrency/geo"
 	"context"
 	"fmt"
 	"math/rand/v2"
 	"sync"
+	"time"
 )
 
 func air(
@@ -13,41 +14,47 @@ func air(
 	ch chan<- int,
 	wg *sync.WaitGroup,
 	n int,
-	airMoisure int,
+	moisure int,
 	coordinates string,
 ) {
 	defer wg.Done()
 
 	for {
+		fmt.Println("Я датчик влажности воздуха", n, "Анализирую...")
+
 		select {
 		case <-ctx.Done():
 			fmt.Println("Я датчик влажности воздуха", n, "Закончил работу! (отключился)")
 			return
-		default:
-			fmt.Println("Я датчик влажности воздуха", n, "Анализирую...")
-			fmt.Println("Я датчик влажности воздуха", n, "Измерил:", airMoisure, "%")
+		case <-time.After(time.Second):
+			fmt.Println("Я датчик влажности воздуха", n, "Измерил:", moisure, "%")
+		}
 
-			ch <- airMoisure
+		select {
+		case <-ctx.Done():
+			fmt.Println("Я датчик влажности воздуха", n, "Закончил работу! (отключился)")
+			return
+		case ch <- moisure:
 			fmt.Println("Я датчик влажности воздуха", n, "Закончил! Координаты:", coordinates, "!")
 		}
 	}
 }
 
 func AirPool(ctx context.Context, sensorCount int) <-chan int {
-	airCh := make(chan int)
+	moisureCh := make(chan int)
 	wg := &sync.WaitGroup{}
 
 	for i := 1; i <= sensorCount; i++ {
 		wg.Add(1)
-		go air(ctx, airCh, wg, i, getAirMoisure(), coordinates.RandomCoordinates())
+		go air(ctx, moisureCh, wg, i, getAirMoisure(), geo.RandomCoordinates())
 	}
 
 	go func() {
 		wg.Wait()
-		close(airCh)
+		close(moisureCh)
 	}()
 
-	return airCh
+	return moisureCh
 }
 
 func getAirMoisure() int {

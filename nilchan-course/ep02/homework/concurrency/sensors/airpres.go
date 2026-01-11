@@ -1,11 +1,12 @@
-package pressure
+package sensors
 
 import (
-	"concurrency/coordinates"
+	"concurrency/geo"
 	"context"
 	"fmt"
 	"math/rand/v2"
 	"sync"
+	"time"
 )
 
 func pressure(
@@ -19,15 +20,21 @@ func pressure(
 	defer wg.Done()
 
 	for {
+		fmt.Println("Я датчик давления воздуха", n, "Анализирую...")
+
 		select {
 		case <-ctx.Done():
 			fmt.Println("Я датчик давления воздуха", n, "Закончил работу! (отключился)")
 			return
-		default:
-			fmt.Println("Я датчик давления воздуха", n, "Анализирую...")
-			fmt.Println("Я датчик давления воздуха", n, "Измерил:", pressure)
+		case <-time.After(time.Second):
+			fmt.Println("Я датчик давления воздуха", n, "Измерил:", pressure, "мм рт. ст.")
+		}
 
-			ch <- pressure
+		select {
+		case <-ctx.Done():
+			fmt.Println("Я датчик давления воздуха", n, "Закончил работу! (отключился)")
+			return
+		case ch <- pressure:
 			fmt.Println("Я датчик давления воздуха", n, "Закончил! Координаты:", cordinates, "!")
 		}
 	}
@@ -39,7 +46,7 @@ func PressurePool(ctx context.Context, sensorCount int) <-chan int {
 
 	for i := 1; i <= sensorCount; i++ {
 		wg.Add(1)
-		go pressure(ctx, pressureCh, wg, i, getPressure(), coordinates.RandomCoordinates())
+		go pressure(ctx, pressureCh, wg, i, getPressure(), geo.RandomCoordinates())
 	}
 
 	go func() {

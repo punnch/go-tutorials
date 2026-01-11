@@ -1,11 +1,12 @@
-package activity
+package sensors
 
 import (
-	"concurrency/coordinates"
+	"concurrency/geo"
 	"context"
 	"fmt"
 	"math/rand/v2"
 	"sync"
+	"time"
 )
 
 func activity(
@@ -19,14 +20,21 @@ func activity(
 	defer wg.Done()
 
 	for {
+		fmt.Println("Я датчик сейсмической активности", n, "Анализирую...")
+
 		select {
 		case <-ctx.Done():
 			fmt.Println("Я датчик сейсмической активности", n, "Закончил работу! (отключился)")
-		default:
-			fmt.Println("Я датчик сейсмической активности", n, "Анализирую...")
-			fmt.Println("Я датчик сейсмической активности", n, "Измерил:", activity)
+			return
+		case <-time.After(time.Second):
+			fmt.Println("Я датчик сейсмической активности", n, "Измерил:", activity, "баллов")
+		}
 
-			ch <- activity
+		select {
+		case <-ctx.Done():
+			fmt.Println("Я датчик сейсмической активности", n, "Закончил работу! (отключился)")
+			return
+		case ch <- activity:
 			fmt.Println("Я датчик сейсмической активности", n, "Законил! Координаты:", coordinates, "!")
 		}
 	}
@@ -38,7 +46,7 @@ func ActivityPool(ctx context.Context, sensorCount int) <-chan int {
 
 	for i := 1; i <= sensorCount; i++ {
 		wg.Add(1)
-		go activity(ctx, wg, activityCh, sensorCount, getSeismicActivity(), coordinates.RandomCoordinates())
+		go activity(ctx, wg, activityCh, i, getSeismicActivity(), geo.RandomCoordinates())
 	}
 
 	go func() {
@@ -52,7 +60,7 @@ func ActivityPool(ctx context.Context, sensorCount int) <-chan int {
 func getSeismicActivity() int {
 	max := 12
 
-	randomSeismicActivity := rand.IntN(max + 1) // 0 - 12
+	randomSeismicActivity := rand.IntN(max + 1)
 
 	return randomSeismicActivity
 }

@@ -1,4 +1,4 @@
-package coordinates
+package geo
 
 import (
 	"fmt"
@@ -10,8 +10,8 @@ func RandomCoordinates() string {
 	min := -2000
 
 	x := rand.Intn(max-min+1) + min
-	y := rand.Intn(max-min) + min
-	z := rand.Intn(max-min) + min
+	y := rand.Intn(max-min+1) + min
+	z := rand.Intn(max-min+1) + min
 
 	return fmt.Sprint(x, y, z)
 }
