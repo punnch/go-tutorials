@@ -9,9 +9,11 @@ import (
 	"time"
 )
 
-var money int = 50
-var bank int
-var mtx sync.Mutex
+var (
+	money int = 50
+	bank  int
+	mtx   sync.Mutex
+)
 
 func payHandler(w http.ResponseWriter, r *http.Request) {
 	httpRequestBody, err := io.ReadAll(r.Body)
