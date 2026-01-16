@@ -1,12 +1,11 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
-	"io"
 	"net/http"
-	"strconv"
-	"strings"
 	"sync"
+	"time"
 )
 
 var (
@@ -15,41 +14,78 @@ var (
 	mtx            sync.Mutex
 )
 
+type HttpResponse struct {
+	Money          int       `json:"money"`
+	PaymentHistory []Payment `json:"pHistory"`
+}
+
 type Payment struct {
-	Description string
-	USD         int
+	Description string    `json:"description"`
+	USD         int       `json:"usd"`
+	FullName    string    `json:"fullName"`
+	Address     string    `json:"address"`
+	Created     time.Time `json:"created"`
+	Canceled    bool      `json:"isCanceled"`
+}
+
+func (p Payment) Validate() bool {
+	switch {
+	case p.Description == "":
+		return false
+	case p.USD == 0:
+		return false
+	case p.FullName == "":
+		return false
+	case p.Address == "":
+		return false
+	default:
+		return true
+	}
 }
 
 func payHandler(w http.ResponseWriter, r *http.Request) {
-	httpRequestBody, err := io.ReadAll(r.Body)
-	if err != nil {
+	var payment Payment
+
+	if err := json.NewDecoder(r.Body).Decode(&payment); err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
+		fmt.Println("error:", err)
 		return
 	}
 
-	parts := strings.SplitN(string(httpRequestBody), ",", 2)
-
-	usd, err := strconv.Atoi(parts[0])
-	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
-		return
-	}
-
-	payment := Payment{
-		Description: parts[1],
-		USD:         usd,
-	}
+	payment.Created = time.Now()
 
 	mtx.Lock()
-	if money-usd >= 0 {
-		money -= usd
+	defer mtx.Unlock()
+
+	if !payment.Validate() {
+		w.WriteHeader(http.StatusBadRequest)
+		fmt.Println("error:", "validation failed")
+		return
+	}
+
+	if money-payment.USD >= 0 {
+		money -= payment.USD
+	} else {
+		payment.Canceled = true
 	}
 
 	paymentHistory = append(paymentHistory, payment)
 
-	fmt.Println("Money:", money)
-	fmt.Println("History:", paymentHistory)
-	mtx.Unlock()
+	httpResponse := HttpResponse{
+		Money:          money,
+		PaymentHistory: paymentHistory,
+	}
+
+	b, err := json.Marshal(httpResponse)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		fmt.Println("error:", err)
+		return
+	}
+
+	if _, err := w.Write(b); err != nil {
+		fmt.Println("error:", err)
+	}
 }
 
 func main() {
