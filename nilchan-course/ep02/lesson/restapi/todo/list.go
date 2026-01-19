@@ -1,5 +1,9 @@
 package todo
 
+// main purpose: represent an opportunity to ineract with tasks
+
+import "maps"
+
 type List struct {
 	tasks map[string]Task
 }
@@ -10,34 +14,46 @@ func NewList() *List {
 	}
 }
 
-func (l *List) AddTask(task Task) {
-	l.tasks[task.Description] = task
-}
-
-func (l *List) ListTasks() map[string]Task {
-	return l.tasks
-}
-
-func (l *List) DoneTask(description string) string {
-	task, ok := l.tasks[description]
-	if !ok {
-		return taskNotFound
+// check if task already exists
+func (l *List) AddTask(task Task) error {
+	if _, ok := l.tasks[task.Description]; ok {
+		return ErrTaskAlreadyExists
 	}
 
-	task.Done()
+	l.tasks[task.Description] = task
+
+	return nil
+}
+
+// return a map copy
+func (l *List) ListTasks() map[string]Task {
+	tmp := make(map[string]Task, len(l.tasks))
+
+	maps.Copy(tmp, l.tasks)
+
+	return tmp
+}
+
+func (l *List) CompleteTask(description string) error {
+	task, ok := l.tasks[description]
+	if !ok {
+		return ErrTaskNotFound
+	}
+
+	task.Complete()
 
 	l.tasks[description] = task
 
-	return ""
+	return nil
 }
 
-func (l *List) DeleteTask(description string) string {
+func (l *List) DeleteTask(description string) error {
 	_, ok := l.tasks[description]
 	if !ok {
-		return taskNotFound
+		return ErrTaskNotFound
 	}
 
 	delete(l.tasks, description)
 
-	return ""
+	return nil
 }

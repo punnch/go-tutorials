@@ -1,30 +1,32 @@
 package todo
 
+// main goal: represent all operations with task fields
+
 import "time"
 
 type Task struct {
 	Description string
 	Text        string
-	IsDone      bool
+	Completed   bool
 
-	CreatedAt time.Time
-	DoneAt    *time.Time
+	CreatedAt   time.Time
+	CompletedAt *time.Time
 }
 
 func NewTask(description string, text string) Task {
 	return Task{
 		Description: description,
 		Text:        text,
-		IsDone:      false,
+		Completed:   false,
 
-		CreatedAt: time.Now(),
-		DoneAt:    nil,
+		CreatedAt:   time.Now(),
+		CompletedAt: nil,
 	}
 }
 
-func (t *Task) Done() {
-	doneTime := time.Now()
+func (t *Task) Complete() {
+	completedTime := time.Now()
 
-	t.IsDone = true
-	t.DoneAt = &doneTime
+	t.Completed = true
+	t.CompletedAt = &completedTime
 }
