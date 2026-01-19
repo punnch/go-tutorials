@@ -1,6 +1,6 @@
 package http
 
-// main goal: what should I send or get from client when...
+// main goal: what should I send or get from client when... (client-server interaction)
 
 import (
 	"net/http"
