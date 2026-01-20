@@ -14,19 +14,19 @@ func NewList() *List {
 	}
 }
 
-// check if task already exists
 func (l *List) AddTask(task Task) error {
-	if _, ok := l.tasks[task.Description]; ok {
+	// check if task already exists
+	if _, ok := l.tasks[task.Title]; ok {
 		return ErrTaskAlreadyExists
 	}
 
-	l.tasks[task.Description] = task
+	l.tasks[task.Title] = task
 
 	return nil
 }
 
-// return a map copy
-func (l *List) ListTasks() map[string]Task {
+func (l *List) ListAllTasks() map[string]Task {
+	// return a map copy
 	tmp := make(map[string]Task, len(l.tasks))
 
 	maps.Copy(tmp, l.tasks)
@@ -34,26 +34,38 @@ func (l *List) ListTasks() map[string]Task {
 	return tmp
 }
 
-func (l *List) CompleteTask(description string) error {
-	task, ok := l.tasks[description]
+func (l *List) ListAllNotCompletedTasks() map[string]Task {
+	notCompletedTasks := make(map[string]Task)
+
+	for title, task := range l.tasks {
+		if !task.Completed {
+			notCompletedTasks[title] = task
+		}
+	}
+
+	return notCompletedTasks
+}
+
+func (l *List) CompleteTask(title string) error {
+	task, ok := l.tasks[title]
 	if !ok {
 		return ErrTaskNotFound
 	}
 
 	task.Complete()
 
-	l.tasks[description] = task
+	l.tasks[title] = task
 
 	return nil
 }
 
-func (l *List) DeleteTask(description string) error {
-	_, ok := l.tasks[description]
+func (l *List) DeleteTask(title string) error {
+	_, ok := l.tasks[title]
 	if !ok {
 		return ErrTaskNotFound
 	}
 
-	delete(l.tasks, description)
+	delete(l.tasks, title)
 
 	return nil
 }

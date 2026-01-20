@@ -64,7 +64,7 @@ failed:
   - status code: 400, 500...
   - response body: JSON with error + time
 */
-func (h *HTTPHandlers) HandleGetTasks(w http.ResponseWriter, r *http.Request) {
+func (h *HTTPHandlers) HandleGetAllTasks(w http.ResponseWriter, r *http.Request) {
 
 }
 
@@ -81,7 +81,7 @@ failed:
   - status code: 400, 500...
   - response body: JSON with error + time
 */
-func (h *HTTPHandlers) HandleGetUncompletedTasks(w http.ResponseWriter, r *http.Request) {
+func (h *HTTPHandlers) HandleGetAllNotCompletedTasks(w http.ResponseWriter, r *http.Request) {
 
 }
 

@@ -5,18 +5,18 @@ package todo
 import "time"
 
 type Task struct {
+	Title       string
 	Description string
-	Text        string
 	Completed   bool
 
 	CreatedAt   time.Time
 	CompletedAt *time.Time
 }
 
-func NewTask(description string, text string) Task {
+func NewTask(title string, description string) Task {
 	return Task{
+		Title:       title,
 		Description: description,
-		Text:        text,
 		Completed:   false,
 
 		CreatedAt:   time.Now(),
