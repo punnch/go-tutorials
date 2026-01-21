@@ -3,8 +3,12 @@ package http
 // main goal: what should I send or get from client when... (client-server interaction)
 
 import (
+	"encoding/json"
+	"errors"
+	"fmt"
 	"net/http"
 	"restapi/todo"
+	"time"
 )
 
 type HTTPHandlers struct {
@@ -31,7 +35,54 @@ failed:
   - response body: JSON with error + time
 */
 func (h *HTTPHandlers) HandleCreateTask(w http.ResponseWriter, r *http.Request) {
+	// 1. get json
+	var taskDTO TaskDTO
+	if err := json.NewDecoder(r.Body).Decode(&taskDTO); err != nil {
+		errorDTO := ErrorDTO{
+			Message: err.Error(),
+			Time:    time.Now(),
+		}
 
+		http.Error(w, errorDTO.ToString(), http.StatusBadRequest)
+		return
+	}
+	// 2. validate task
+	if err := taskDTO.ValidateForCreate(); err != nil {
+		errorDTO := ErrorDTO{
+			Message: err.Error(),
+			Time:    time.Now(),
+		}
+
+		http.Error(w, errorDTO.ToString(), http.StatusBadRequest)
+		return
+	}
+
+	// 3. add task to list
+	todoTask := todo.NewTask(taskDTO.Title, taskDTO.Description)
+	if err := h.todoList.AddTask(todoTask); err != nil {
+		errorDTO := ErrorDTO{
+			Message: err.Error(),
+			Time:    time.Now(),
+		}
+
+		if errors.Is(err, todo.ErrTaskAlreadyExists) {
+			http.Error(w, errorDTO.ToString(), http.StatusConflict)
+		} else {
+			http.Error(w, errorDTO.ToString(), http.StatusInternalServerError)
+		}
+		return
+	}
+
+	// 4. send task to the server
+	b, err := json.MarshalIndent(taskDTO, "", "    ")
+	if err != nil {
+		panic(err)
+	}
+
+	w.WriteHeader(http.StatusCreated)
+	if _, err := w.Write(b); err != nil {
+		fmt.Println("failed to write http response:", err)
+	}
 }
 
 /*
