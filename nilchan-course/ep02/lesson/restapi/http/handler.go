@@ -4,7 +4,6 @@ package http
 
 import (
 	"encoding/json"
-	"errors"
 	"fmt"
 	"net/http"
 	"restapi/todo"
@@ -57,11 +56,7 @@ func (h *HTTPHandlers) HandleCreateTask(w http.ResponseWriter, r *http.Request) 
 	if err := h.todoList.AddTask(todoTask); err != nil {
 		errorDTO := NewErrorDTO(err.Error())
 
-		if errors.Is(err, todo.ErrTaskAlreadyExists) {
-			http.Error(w, errorDTO.ToString(), http.StatusConflict)
-		} else {
-			http.Error(w, errorDTO.ToString(), http.StatusInternalServerError)
-		}
+		errorDTO.CompareSendErr(w, err, todo.ErrTaskAlreadyExists, http.StatusConflict)
 		return
 	}
 
@@ -98,11 +93,7 @@ func (h *HTTPHandlers) HandleGetTask(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		errorDTO := NewErrorDTO(err.Error())
 
-		if errors.Is(err, todo.ErrTaskNotFound) {
-			http.Error(w, errorDTO.ToString(), http.StatusNotFound)
-		} else {
-			http.Error(w, errorDTO.ToString(), http.StatusInternalServerError)
-		}
+		errorDTO.CompareSendErr(w, err, todo.ErrTaskNotFound, http.StatusNotFound)
 		return
 	}
 
@@ -188,7 +179,52 @@ failed:
   - response body: JSON with error + time
 */
 func (h *HTTPHandlers) HandleCompleteTask(w http.ResponseWriter, r *http.Request) {
+	var completeTaskDTO CompleteTaskDTO
+	if err := json.NewDecoder(r.Body).Decode(&completeTaskDTO); err != nil {
+		errorDTO := NewErrorDTO(err.Error())
 
+		http.Error(w, errorDTO.ToString(), http.StatusBadRequest)
+		return
+	}
+
+	title := mux.Vars(r)["title"]
+
+	if completeTaskDTO.Completed {
+		if err := h.todoList.CompleteTask(title); err != nil {
+			errorDTO := NewErrorDTO(err.Error())
+
+			errorDTO.CompareSendErr(w, err, todo.ErrTaskNotFound, http.StatusNotFound)
+			return
+		}
+	} else {
+		if err := h.todoList.UncompleteTask(title); err != nil {
+			errorDTO := NewErrorDTO(err.Error())
+
+			errorDTO.CompareSendErr(w, err, todo.ErrTaskNotFound, http.StatusNotFound)
+			return
+		}
+	}
+
+	// get task for http response
+	task, err := h.todoList.GetTask(title)
+	if err != nil {
+		errorDTO := NewErrorDTO(err.Error())
+
+		errorDTO.CompareSendErr(w, err, todo.ErrTaskNotFound, http.StatusNotFound)
+		return
+	}
+
+	// response
+	b, err := json.MarshalIndent(task, "", "    ")
+	if err != nil {
+		panic(err)
+	}
+
+	w.WriteHeader(http.StatusOK)
+	if _, err := w.Write(b); err != nil {
+		fmt.Println("failed to write http response:", err)
+		return
+	}
 }
 
 /*

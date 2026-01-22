@@ -3,6 +3,7 @@ package http
 import (
 	"encoding/json"
 	"errors"
+	"net/http"
 	"time"
 )
 
@@ -25,6 +26,10 @@ func (t TaskDTO) ValidateForCreate() error {
 	return nil
 }
 
+type CompleteTaskDTO struct {
+	Completed bool
+}
+
 func NewErrorDTO(message string) ErrorDTO {
 	return ErrorDTO{
 		Message: message,
@@ -44,4 +49,13 @@ func (e ErrorDTO) ToString() string {
 	}
 
 	return string(b)
+}
+
+// CompareSendErr compares two errors to check which encountered and sends error to client
+func (e ErrorDTO) CompareSendErr(w http.ResponseWriter, err error, target error, code int) {
+	if errors.Is(err, target) {
+		http.Error(w, e.ToString(), code)
+	} else {
+		http.Error(w, e.ToString(), http.StatusInternalServerError)
+	}
 }
