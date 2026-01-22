@@ -68,6 +68,19 @@ func (l *List) CompleteTask(title string) error {
 	return nil
 }
 
+func (l *List) UncompleteTask(title string) error {
+	task, ok := l.tasks[title]
+	if !ok {
+		return ErrTaskNotFound
+	}
+
+	task.Uncomplete()
+
+	l.tasks[title] = task
+
+	return nil
+}
+
 func (l *List) DeleteTask(title string) error {
 	_, ok := l.tasks[title]
 	if !ok {
