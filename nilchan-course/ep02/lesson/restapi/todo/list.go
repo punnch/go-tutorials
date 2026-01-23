@@ -1,6 +1,6 @@
 package todo
 
-// main purpose: represent an opportunity to ineract with tasks
+// main goal: represent an opportunity to interact with tasks
 
 import (
 	"maps"
