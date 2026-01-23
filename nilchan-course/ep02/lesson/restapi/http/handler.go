@@ -35,7 +35,6 @@ failed:
   - response body: JSON with error + time
 */
 func (h *HTTPHandlers) HandleCreateTask(w http.ResponseWriter, r *http.Request) {
-	// 1. get json
 	var taskDTO TaskDTO
 	if err := json.NewDecoder(r.Body).Decode(&taskDTO); err != nil {
 		errorDTO := NewErrorDTO(err.Error())
@@ -43,7 +42,7 @@ func (h *HTTPHandlers) HandleCreateTask(w http.ResponseWriter, r *http.Request) 
 		http.Error(w, errorDTO.ToString(), http.StatusBadRequest)
 		return
 	}
-	// 2. validate task
+
 	if err := taskDTO.ValidateForCreate(); err != nil {
 		errorDTO := NewErrorDTO(err.Error())
 
@@ -51,7 +50,6 @@ func (h *HTTPHandlers) HandleCreateTask(w http.ResponseWriter, r *http.Request) 
 		return
 	}
 
-	// 3. add task to list
 	todoTask := todo.NewTask(taskDTO.Title, taskDTO.Description)
 	if err := h.todoList.AddTask(todoTask); err != nil {
 		errorDTO := NewErrorDTO(err.Error())
@@ -60,7 +58,6 @@ func (h *HTTPHandlers) HandleCreateTask(w http.ResponseWriter, r *http.Request) 
 		return
 	}
 
-	// 4. send task to the server
 	b, err := json.MarshalIndent(todoTask, "", "    ")
 	if err != nil {
 		panic(err)
@@ -122,10 +119,38 @@ failed:
   - status code: 400, 500...
   - response body: JSON with error + time
 */
-func (h *HTTPHandlers) HandleGetAllTasks(w http.ResponseWriter, r *http.Request) {
-	tasks := h.todoList.GetAllTasks()
+func (h *HTTPHandlers) HandleGetTasks(w http.ResponseWriter, r *http.Request) {
+	tasks := h.todoList.GetTasks()
 
 	b, err := json.MarshalIndent(tasks, "", "    ")
+	if err != nil {
+		panic(err)
+	}
+
+	w.WriteHeader(http.StatusOK)
+	if _, err := w.Write(b); err != nil {
+		fmt.Println("failed to write http response:", err)
+		return
+	}
+}
+
+/*
+pattern: /tasks?completed=true
+method: GET
+info: query params
+
+succeed:
+  - status code: 200 OK
+  - response body: JSON represented uncompleted tasks
+
+failed:
+  - status code: 400, 500...
+  - response body: JSON with error + time
+*/
+func (h *HTTPHandlers) HandleGetCompletedTasks(w http.ResponseWriter, r *http.Request) {
+	completedTasks := h.todoList.GetCompletedTasks()
+
+	b, err := json.MarshalIndent(completedTasks, "", "    ")
 	if err != nil {
 		panic(err)
 	}
@@ -150,8 +175,8 @@ failed:
   - status code: 400, 500...
   - response body: JSON with error + time
 */
-func (h *HTTPHandlers) HandleGetAllUncompletedTasks(w http.ResponseWriter, r *http.Request) {
-	uncompletedTasks := h.todoList.GetAllUncompletedTasks()
+func (h *HTTPHandlers) HandleGetUncompletedTasks(w http.ResponseWriter, r *http.Request) {
+	uncompletedTasks := h.todoList.GetUncompletedTasks()
 
 	b, err := json.MarshalIndent(uncompletedTasks, "", "    ")
 	if err != nil {
@@ -189,24 +214,17 @@ func (h *HTTPHandlers) HandleCompleteTask(w http.ResponseWriter, r *http.Request
 
 	title := mux.Vars(r)["title"]
 
+	var (
+		task todo.Task
+		err  error
+	)
+
 	if completeTaskDTO.Completed {
-		if err := h.todoList.CompleteTask(title); err != nil {
-			errorDTO := NewErrorDTO(err.Error())
-
-			errorDTO.CompareSendErr(w, err, todo.ErrTaskNotFound, http.StatusNotFound)
-			return
-		}
+		task, err = h.todoList.CompleteTask(title)
 	} else {
-		if err := h.todoList.UncompleteTask(title); err != nil {
-			errorDTO := NewErrorDTO(err.Error())
-
-			errorDTO.CompareSendErr(w, err, todo.ErrTaskNotFound, http.StatusNotFound)
-			return
-		}
+		task, err = h.todoList.UncompleteTask(title)
 	}
 
-	// get task for http response
-	task, err := h.todoList.GetTask(title)
 	if err != nil {
 		errorDTO := NewErrorDTO(err.Error())
 
@@ -214,7 +232,6 @@ func (h *HTTPHandlers) HandleCompleteTask(w http.ResponseWriter, r *http.Request
 		return
 	}
 
-	// response
 	b, err := json.MarshalIndent(task, "", "    ")
 	if err != nil {
 		panic(err)

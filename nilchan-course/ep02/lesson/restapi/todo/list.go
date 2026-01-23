@@ -43,7 +43,7 @@ func (l *List) GetTask(title string) (Task, error) {
 	return task, nil
 }
 
-func (l *List) GetAllTasks() map[string]Task {
+func (l *List) GetTasks() map[string]Task {
 	l.mtx.RLock()
 	defer l.mtx.RUnlock()
 
@@ -54,7 +54,22 @@ func (l *List) GetAllTasks() map[string]Task {
 	return tmp
 }
 
-func (l *List) GetAllUncompletedTasks() map[string]Task {
+func (l *List) GetCompletedTasks() map[string]Task {
+	completedTasks := make(map[string]Task)
+
+	l.mtx.RLock()
+	defer l.mtx.RUnlock()
+
+	for title, task := range l.tasks {
+		if task.Completed {
+			completedTasks[title] = task
+		}
+	}
+
+	return completedTasks
+}
+
+func (l *List) GetUncompletedTasks() map[string]Task {
 	uncompletedTasks := make(map[string]Task)
 
 	l.mtx.RLock()
@@ -69,36 +84,36 @@ func (l *List) GetAllUncompletedTasks() map[string]Task {
 	return uncompletedTasks
 }
 
-func (l *List) CompleteTask(title string) error {
+func (l *List) CompleteTask(title string) (Task, error) {
 	l.mtx.Lock()
 	defer l.mtx.Unlock()
 
 	task, ok := l.tasks[title]
 	if !ok {
-		return ErrTaskNotFound
+		return Task{}, ErrTaskNotFound
 	}
 
 	task.Complete()
 
 	l.tasks[title] = task
 
-	return nil
+	return l.tasks[title], nil
 }
 
-func (l *List) UncompleteTask(title string) error {
+func (l *List) UncompleteTask(title string) (Task, error) {
 	l.mtx.Lock()
 	defer l.mtx.Unlock()
 
 	task, ok := l.tasks[title]
 	if !ok {
-		return ErrTaskNotFound
+		return Task{}, ErrTaskNotFound
 	}
 
 	task.Uncomplete()
 
 	l.tasks[title] = task
 
-	return nil
+	return l.tasks[title], nil
 }
 
 func (l *List) DeleteTask(title string) error {
