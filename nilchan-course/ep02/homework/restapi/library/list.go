@@ -20,6 +20,12 @@ type List struct {
 	mtx   sync.RWMutex
 }
 
+func NewList() *List {
+	return &List{
+		books: make(map[string]Book),
+	}
+}
+
 func (l *List) AddBook(book Book) (Book, error) {
 	l.mtx.Lock()
 	defer l.mtx.Unlock()

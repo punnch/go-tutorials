@@ -8,8 +8,14 @@ import (
 	"strconv"
 )
 
-type httpHandlers struct {
+type HTTPHandlers struct {
 	bookList *library.List
+}
+
+func NewHttpHandlers(bookList *library.List) *HTTPHandlers {
+	return &HTTPHandlers{
+		bookList: bookList,
+	}
 }
 
 /*
@@ -25,12 +31,12 @@ fail:
   - status code: 400, 409, 500...
   - response body: JSON represented error + time
 */
-func (h *httpHandlers) HandleCreateBook(w http.ResponseWriter, r *http.Request) {
+func (h *HTTPHandlers) HandleCreateBook(w http.ResponseWriter, r *http.Request) {
 
 }
 
 /*
-pattern: /books/{book}
+pattern: /books/{title}
 method: PATCH
 info: pattern + JSON
 
@@ -42,12 +48,12 @@ fail:
   - status code: 400, 404, 500...
   - response body: JSON represented error + time
 */
-func (h *httpHandlers) HandleReadBook(w http.ResponseWriter, r *http.Request) {
+func (h *HTTPHandlers) HandleReadBook(w http.ResponseWriter, r *http.Request) {
 
 }
 
 /*
-pattern: /books/{book}
+pattern: /books/{title}
 method: GET
 info: pattern
 
@@ -59,7 +65,7 @@ fail:
   - status code: 404, 500...
   - response body: JSON represented error + time
 */
-func (h *httpHandlers) HandleGetBook(w http.ResponseWriter, r *http.Request) {
+func (h *HTTPHandlers) HandleGetBook(w http.ResponseWriter, r *http.Request) {
 
 }
 
@@ -76,7 +82,7 @@ fail:
   - status code: 400, 500...
   - response body: JSON represented error + time
 */
-func (h *httpHandlers) HandleGetBooks(w http.ResponseWriter, r *http.Request) {
+func (h *HTTPHandlers) HandleGetBooks(w http.ResponseWriter, r *http.Request) {
 	author := r.URL.Query().Get("author")
 	readStr := r.URL.Query().Get("read")
 
@@ -107,7 +113,7 @@ func (h *httpHandlers) HandleGetBooks(w http.ResponseWriter, r *http.Request) {
 }
 
 /*
-pattern: /books/{book}
+pattern: /books/{title}
 method: DELETE
 info: pattern
 
@@ -119,6 +125,6 @@ fail:
   - status code: 404, 500...
   - response body: JSON represented error + time
 */
-func (h *httpHandlers) HandleDeleteBook(w http.ResponseWriter, r *http.Request) {
+func (h *HTTPHandlers) HandleDeleteBook(w http.ResponseWriter, r *http.Request) {
 
 }
