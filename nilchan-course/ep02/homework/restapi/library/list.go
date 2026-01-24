@@ -1,7 +1,6 @@
 package library
 
 import (
-	"maps"
 	"sync"
 )
 
@@ -76,60 +75,25 @@ func (l *List) GetBook(title string) (Book, error) {
 	return book, nil
 }
 
-func (l *List) GetBooks() map[string]Book {
+func (l *List) GetBooks(author string, read *bool) map[string]Book {
+	tmp := make(map[string]Book)
+
 	l.mtx.RLock()
 	defer l.mtx.RUnlock()
 
-	tmp := make(map[string]Book, len(l.books))
+	for title, book := range l.books {
+		if author != "" && book.Author != author {
+			continue
+		}
 
-	maps.Copy(tmp, l.books)
+		if read != nil && book.isRead != *read {
+			continue
+		}
+
+		tmp[title] = book
+	}
 
 	return tmp
-}
-
-func (l *List) GetAuthorBooks(author string) map[string]Book {
-	authorBooks := make(map[string]Book)
-
-	l.mtx.RLock()
-	defer l.mtx.Unlock()
-
-	for title, book := range l.books {
-		if book.Author == author {
-			authorBooks[title] = book
-		}
-	}
-
-	return authorBooks
-}
-
-func (l *List) GetReadedBooks() map[string]Book {
-	readedBooks := make(map[string]Book)
-
-	l.mtx.RLock()
-	defer l.mtx.RUnlock()
-
-	for title, book := range l.books {
-		if book.Readed {
-			readedBooks[title] = book
-		}
-	}
-
-	return readedBooks
-}
-
-func (l *List) GetUnreadBooks() map[string]Book {
-	unreadBooks := make(map[string]Book)
-
-	l.mtx.RLock()
-	defer l.mtx.RUnlock()
-
-	for title, book := range l.books {
-		if !book.Readed {
-			unreadBooks[title] = book
-		}
-	}
-
-	return unreadBooks
 }
 
 func (l *List) DeleteBook(title string) error {
