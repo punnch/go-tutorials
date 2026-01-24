@@ -2,6 +2,8 @@ package httpwork
 
 import (
 	"encoding/json"
+	"errors"
+	"net/http"
 	"time"
 )
 
@@ -29,4 +31,19 @@ func (e ErrorDTO) ToString() string {
 		panic(err)
 	}
 	return string(b)
+}
+
+func ErrJSON(w http.ResponseWriter, err error, code int) {
+	errorDTO := NewErrorDTO(err.Error())
+	http.Error(w, errorDTO.ToString(), code)
+}
+
+func ErrCompareJSON(w http.ResponseWriter, err error, target error, code int) {
+	errorDTO := NewErrorDTO(err.Error())
+
+	if errors.Is(err, target) {
+		http.Error(w, errorDTO.ToString(), code)
+	} else {
+		http.Error(w, errorDTO.ToString(), http.StatusInternalServerError)
+	}
 }

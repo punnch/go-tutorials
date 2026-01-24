@@ -6,6 +6,8 @@ import (
 	"net/http"
 	"restapi/library"
 	"strconv"
+
+	"github.com/gorilla/mux"
 )
 
 type HTTPHandlers struct {
@@ -90,9 +92,7 @@ func (h *HTTPHandlers) HandleGetBooks(w http.ResponseWriter, r *http.Request) {
 	if readStr != "" {
 		readBool, err := strconv.ParseBool(readStr)
 		if err != nil {
-			errorDTO := NewErrorDTO(err.Error())
-
-			http.Error(w, errorDTO.ToString(), http.StatusBadRequest)
+			ErrJSON(w, err, http.StatusBadRequest)
 			return
 		}
 		read = &readBool
@@ -126,5 +126,13 @@ fail:
   - response body: JSON represented error + time
 */
 func (h *HTTPHandlers) HandleDeleteBook(w http.ResponseWriter, r *http.Request) {
+	title := mux.Vars(r)["title"]
 
+	err := h.bookList.DeleteBook(title)
+	if err != nil {
+		ErrCompareJSON(w, err, library.ErrBookNotFound, http.StatusNotFound)
+		return
+	}
+
+	w.WriteHeader(http.StatusNoContent)
 }
