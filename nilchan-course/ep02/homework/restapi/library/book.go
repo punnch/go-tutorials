@@ -6,7 +6,7 @@ type Book struct {
 	Title  string
 	Author string
 	Pages  int
-	Readed bool
+	isRead bool
 
 	AddedAt  time.Time
 	ReadedAt *time.Time
@@ -17,7 +17,7 @@ func NewBook(title string, author string, pages int) Book {
 		Title:  title,
 		Author: author,
 		Pages:  pages,
-		Readed: false,
+		isRead: false,
 
 		AddedAt:  time.Now(),
 		ReadedAt: nil,
@@ -25,13 +25,13 @@ func NewBook(title string, author string, pages int) Book {
 }
 
 func (b *Book) Read() {
-	b.Readed = true
+	b.isRead = true
 
 	readedAt := time.Now()
 	b.ReadedAt = &readedAt
 }
 
 func (b *Book) Unread() {
-	b.Readed = false
+	b.isRead = false
 	b.ReadedAt = nil
 }
