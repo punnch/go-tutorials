@@ -5,6 +5,12 @@ import (
 	"time"
 )
 
+type TaskDTO struct {
+	title  string
+	author string
+	pages  int
+}
+
 type ErrorDTO struct {
 	message string
 	time    time.Time
