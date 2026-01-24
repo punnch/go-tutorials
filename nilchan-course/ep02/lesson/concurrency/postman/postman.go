@@ -25,7 +25,7 @@ func Postman(
 		default:
 			fmt.Println("I'm a postman:", n, "Start working...")
 			time.Sleep(time.Second)
-			fmt.Println("I'm a postman:", n, "Took a mail:", mail)
+			fmt.Println("I'm a postman:", n, "Went to the post office with mail:", mail)
 
 			transferPoint <- mail
 			fmt.Println("I'm a postman:", n, "Brought a mail:", mail)
