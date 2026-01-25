@@ -26,14 +26,16 @@ func NewList() *List {
 	}
 }
 
-func (l *List) AddBook(book Book) (Book, error) {
+func (l *List) AddBook(title, author string, pages int) (Book, error) {
 	l.mtx.Lock()
 	defer l.mtx.Unlock()
 
-	book, ok := l.books[book.Title]
+	_, ok := l.books[title]
 	if ok {
 		return Book{}, ErrBookAlreadyExist
 	}
+
+	book := NewBook(title, author, pages)
 
 	l.books[book.Title] = book
 
