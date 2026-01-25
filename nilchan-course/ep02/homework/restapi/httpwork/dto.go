@@ -8,13 +8,13 @@ import (
 )
 
 type BookReadDTO struct {
-	IsRead bool
+	IsRead bool `json:"read"`
 }
 
 type BookDTO struct {
-	Title  string
-	Author string
-	Pages  int
+	Title  string `json:"title"`
+	Author string `json:"author"`
+	Pages  int    `json:"pages"`
 }
 
 func (b BookDTO) ValidateToCreate() error {

@@ -3,13 +3,13 @@ package library
 import "time"
 
 type Book struct {
-	Title  string
-	Author string
-	Pages  int
-	IsRead bool
+	Title  string `json:"title"`
+	Author string `json:"author"`
+	Pages  int    `json:"pages"`
+	IsRead bool   `json:"read"`
 
-	AddedAt  time.Time
-	ReadedAt *time.Time
+	AddedAt  time.Time  `json:"addedAt"`
+	ReadedAt *time.Time `json:"readedAt"`
 }
 
 func NewBook(title string, author string, pages int) Book {
