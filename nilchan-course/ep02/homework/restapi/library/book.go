@@ -3,35 +3,35 @@ package library
 import "time"
 
 type Book struct {
-	title  string
-	author string
-	pages  int
-	isRead bool
+	Title  string
+	Author string
+	Pages  int
+	IsRead bool
 
-	addedAt  time.Time
-	readedAt *time.Time
+	AddedAt  time.Time
+	ReadedAt *time.Time
 }
 
 func NewBook(title string, author string, pages int) Book {
 	return Book{
-		title:  title,
-		author: author,
-		pages:  pages,
-		isRead: false,
+		Title:  title,
+		Author: author,
+		Pages:  pages,
+		IsRead: false,
 
-		addedAt:  time.Now(),
-		readedAt: nil,
+		AddedAt:  time.Now(),
+		ReadedAt: nil,
 	}
 }
 
 func (b *Book) Read() {
-	b.isRead = true
+	b.IsRead = true
 
 	readedAt := time.Now()
-	b.readedAt = &readedAt
+	b.ReadedAt = &readedAt
 }
 
 func (b *Book) Unread() {
-	b.isRead = false
-	b.readedAt = nil
+	b.IsRead = false
+	b.ReadedAt = nil
 }

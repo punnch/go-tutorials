@@ -45,7 +45,7 @@ func (h *HTTPHandlers) HandleCreateBook(w http.ResponseWriter, r *http.Request) 
 		return
 	}
 
-	book := library.NewBook(bookDTO.title, bookDTO.author, bookDTO.pages)
+	book := library.NewBook(bookDTO.Title, bookDTO.Author, bookDTO.Pages)
 
 	if err := h.bookList.AddBook(book); err != nil {
 		ErrCompareJSON(w, err, library.ErrBookAlreadyExist, http.StatusConflict)
@@ -83,7 +83,7 @@ func (h *HTTPHandlers) HandleReadBook(w http.ResponseWriter, r *http.Request) {
 
 	title := mux.Vars(r)["title"]
 
-	book, err := h.bookList.ReadBook(title, bookReadDTO.isRead)
+	book, err := h.bookList.ReadBook(title, bookReadDTO.IsRead)
 	if err != nil {
 		ErrCompareJSON(w, err, library.ErrBookNotFound, http.StatusNotFound)
 		return

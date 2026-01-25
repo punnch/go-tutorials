@@ -8,25 +8,25 @@ import (
 )
 
 type BookReadDTO struct {
-	isRead bool
+	IsRead bool
 }
 
 type BookDTO struct {
-	title  string
-	author string
-	pages  int
+	Title  string
+	Author string
+	Pages  int
 }
 
 func (b BookDTO) VerifyToCreate() error {
-	if b.title == "" {
+	if b.Title == "" {
 		return errors.New("title is empty")
 	}
 
-	if b.author == "" {
+	if b.Author == "" {
 		return errors.New("author is empty")
 	}
 
-	if b.pages == 0 {
+	if b.Pages == 0 {
 		return errors.New("pages are empty")
 	}
 
@@ -34,14 +34,14 @@ func (b BookDTO) VerifyToCreate() error {
 }
 
 type ErrorDTO struct {
-	message string
-	time    time.Time
+	Message string
+	Time    time.Time
 }
 
 func NewErrorDTO(msg string) ErrorDTO {
 	return ErrorDTO{
-		message: msg,
-		time:    time.Now(),
+		Message: msg,
+		Time:    time.Now(),
 	}
 }
 
