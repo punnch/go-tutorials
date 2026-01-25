@@ -40,7 +40,7 @@ func (h *HTTPHandlers) HandleCreateBook(w http.ResponseWriter, r *http.Request) 
 		return
 	}
 
-	if err := bookDTO.VerifyToCreate(); err != nil {
+	if err := bookDTO.ValidateToCreate(); err != nil {
 		ErrJSON(w, err, http.StatusBadRequest)
 		return
 	}

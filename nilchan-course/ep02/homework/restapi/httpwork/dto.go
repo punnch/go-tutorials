@@ -17,7 +17,7 @@ type BookDTO struct {
 	Pages  int
 }
 
-func (b BookDTO) VerifyToCreate() error {
+func (b BookDTO) ValidateToCreate() error {
 	if b.Title == "" {
 		return errors.New("title is empty")
 	}
