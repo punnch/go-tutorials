@@ -34,7 +34,26 @@ fail:
   - response body: JSON represented error + time
 */
 func (h *HTTPHandlers) HandleCreateBook(w http.ResponseWriter, r *http.Request) {
+	var bookDTO BookDTO
+	err := json.NewDecoder(r.Body).Decode(&bookDTO)
+	if err != nil {
+		ErrJSON(w, err, http.StatusBadRequest)
+		return
+	}
 
+	book, err := h.bookList.AddBook(bookDTO.title, bookDTO.author, bookDTO.pages)
+	if err != nil {
+		ErrCompareJSON(w, err, library.ErrBookAlreadyExist, http.StatusConflict)
+		return
+	}
+
+	b := ToJSON(book)
+
+	w.WriteHeader(http.StatusCreated)
+	if _, err := w.Write(b); err != nil {
+		fmt.Println("failed to write http response:", err)
+		return
+	}
 }
 
 /*
