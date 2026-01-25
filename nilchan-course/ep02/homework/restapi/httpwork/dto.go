@@ -7,7 +7,7 @@ import (
 	"time"
 )
 
-type TaskDTO struct {
+type BookDTO struct {
 	title  string
 	author string
 	pages  int
