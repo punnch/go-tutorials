@@ -35,8 +35,12 @@ fail:
 */
 func (h *HTTPHandlers) HandleCreateBook(w http.ResponseWriter, r *http.Request) {
 	var bookDTO BookDTO
-	err := json.NewDecoder(r.Body).Decode(&bookDTO)
-	if err != nil {
+	if err := json.NewDecoder(r.Body).Decode(&bookDTO); err != nil {
+		ErrJSON(w, err, http.StatusBadRequest)
+		return
+	}
+
+	if err := bookDTO.VerifyToCreate(); err != nil {
 		ErrJSON(w, err, http.StatusBadRequest)
 		return
 	}
@@ -108,7 +112,21 @@ fail:
   - response body: JSON represented error + time
 */
 func (h *HTTPHandlers) HandleGetBook(w http.ResponseWriter, r *http.Request) {
+	title := mux.Vars(r)["title"]
 
+	book, err := h.bookList.GetBook(title)
+	if err != nil {
+		ErrCompareJSON(w, err, library.ErrBookNotFound, http.StatusNotFound)
+		return
+	}
+
+	b := ToJSON(book)
+
+	w.WriteHeader(http.StatusOK)
+	if _, err := w.Write(b); err != nil {
+		fmt.Println("failed to write http response:", err)
+		return
+	}
 }
 
 /*
@@ -117,7 +135,13 @@ method: GET
 info: query params
 
 succeed:
-  - status code: 200 OK
+  - status code: 200 O
+    if err := h.bookList.DeleteBook(title); err != nil {
+    ErrCompareJSON(w, err, library.ErrBookNotFound, http.StatusNotFound)
+    return
+    }
+
+K
   - response body: JSON represented received books
 
 fail:
