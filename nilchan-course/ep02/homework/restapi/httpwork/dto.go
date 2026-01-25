@@ -7,6 +7,10 @@ import (
 	"time"
 )
 
+type BookReadDTO struct {
+	isRead bool
+}
+
 type BookDTO struct {
 	title  string
 	author string
