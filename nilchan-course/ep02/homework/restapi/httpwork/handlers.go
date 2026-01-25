@@ -41,8 +41,9 @@ func (h *HTTPHandlers) HandleCreateBook(w http.ResponseWriter, r *http.Request) 
 		return
 	}
 
-	book, err := h.bookList.AddBook(bookDTO.title, bookDTO.author, bookDTO.pages)
-	if err != nil {
+	book := library.NewBook(bookDTO.title, bookDTO.author, bookDTO.pages)
+
+	if err := h.bookList.AddBook(book); err != nil {
 		ErrCompareJSON(w, err, library.ErrBookAlreadyExist, http.StatusConflict)
 		return
 	}
@@ -70,7 +71,27 @@ fail:
   - response body: JSON represented error + time
 */
 func (h *HTTPHandlers) HandleReadBook(w http.ResponseWriter, r *http.Request) {
+	var bookReadDTO BookReadDTO
+	if err := json.NewDecoder(r.Body).Decode(&bookReadDTO); err != nil {
+		ErrJSON(w, err, http.StatusBadRequest)
+		return
+	}
 
+	title := mux.Vars(r)["title"]
+
+	book, err := h.bookList.ReadBook(title, bookReadDTO.isRead)
+	if err != nil {
+		ErrCompareJSON(w, err, library.ErrBookNotFound, http.StatusNotFound)
+		return
+	}
+
+	b := ToJSON(book)
+
+	w.WriteHeader(http.StatusOK)
+	if _, err := w.Write(b); err != nil {
+		fmt.Println("failed to write http response:", err)
+		return
+	}
 }
 
 /*
@@ -119,10 +140,7 @@ func (h *HTTPHandlers) HandleGetBooks(w http.ResponseWriter, r *http.Request) {
 
 	books := h.bookList.GetBooks(author, read)
 
-	b, err := json.MarshalIndent(books, "", "    ")
-	if err != nil {
-		panic(err)
-	}
+	b := ToJSON(books)
 
 	w.WriteHeader(http.StatusOK)
 	if _, err := w.Write(b); err != nil {
@@ -147,8 +165,7 @@ fail:
 func (h *HTTPHandlers) HandleDeleteBook(w http.ResponseWriter, r *http.Request) {
 	title := mux.Vars(r)["title"]
 
-	err := h.bookList.DeleteBook(title)
-	if err != nil {
+	if err := h.bookList.DeleteBook(title); err != nil {
 		ErrCompareJSON(w, err, library.ErrBookNotFound, http.StatusNotFound)
 		return
 	}

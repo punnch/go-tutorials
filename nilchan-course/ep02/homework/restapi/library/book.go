@@ -3,24 +3,24 @@ package library
 import "time"
 
 type Book struct {
-	Title  string
-	Author string
-	Pages  int
+	title  string
+	author string
+	pages  int
 	isRead bool
 
-	AddedAt  time.Time
-	ReadedAt *time.Time
+	addedAt  time.Time
+	readedAt *time.Time
 }
 
 func NewBook(title string, author string, pages int) Book {
 	return Book{
-		Title:  title,
-		Author: author,
-		Pages:  pages,
+		title:  title,
+		author: author,
+		pages:  pages,
 		isRead: false,
 
-		AddedAt:  time.Now(),
-		ReadedAt: nil,
+		addedAt:  time.Now(),
+		readedAt: nil,
 	}
 }
 
@@ -28,10 +28,10 @@ func (b *Book) Read() {
 	b.isRead = true
 
 	readedAt := time.Now()
-	b.ReadedAt = &readedAt
+	b.readedAt = &readedAt
 }
 
 func (b *Book) Unread() {
 	b.isRead = false
-	b.ReadedAt = nil
+	b.readedAt = nil
 }

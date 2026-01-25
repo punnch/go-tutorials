@@ -26,23 +26,20 @@ func NewList() *List {
 	}
 }
 
-func (l *List) AddBook(title, author string, pages int) (Book, error) {
+func (l *List) AddBook(book Book) error {
 	l.mtx.Lock()
 	defer l.mtx.Unlock()
 
-	_, ok := l.books[title]
-	if ok {
-		return Book{}, ErrBookAlreadyExist
+	if _, ok := l.books[book.title]; ok {
+		return ErrBookAlreadyExist
 	}
 
-	book := NewBook(title, author, pages)
+	l.books[book.title] = book
 
-	l.books[book.Title] = book
-
-	return book, nil
+	return nil
 }
 
-func (l *List) ReadBook(title string) (Book, error) {
+func (l *List) ReadBook(title string, read bool) (Book, error) {
 	l.mtx.Lock()
 	defer l.mtx.Unlock()
 
@@ -51,20 +48,11 @@ func (l *List) ReadBook(title string) (Book, error) {
 		return Book{}, ErrBookNotFound
 	}
 
-	book.Read()
-
-	l.books[title] = book
-
-	return book, nil
-}
-
-func (l *List) UnreadBook(title string) (Book, error) {
-	book, ok := l.books[title]
-	if !ok {
-		return Book{}, ErrBookNotFound
+	if read {
+		book.Read()
+	} else {
+		book.Unread()
 	}
-
-	book.Unread()
 
 	l.books[title] = book
 
@@ -90,7 +78,7 @@ func (l *List) GetBooks(author string, read *bool) map[string]Book {
 	defer l.mtx.RUnlock()
 
 	for title, book := range l.books {
-		if author != "" && book.Author != author {
+		if author != "" && book.author != author {
 			continue
 		}
 
