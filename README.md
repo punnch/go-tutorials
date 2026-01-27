@@ -2,11 +2,11 @@
 
 ## 📖 Description
 
-- This repository is for **personal learning**
-- It contains Go code from:
-  - Video tutorials
-  - Books
-  - Official go.dev website
+1. This repository is for **personal learning**
+2. It contains Go code from:
+    - Video tutorials
+    - Books
+    - Official go.dev website
 
 ---
 
