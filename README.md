@@ -4,9 +4,9 @@
 
 - This repository is for **personal learning**
 - It contains Go code from:
-    1. Video tutorials
-    2. Books
-    3. Official go.dev website
+  - Video tutorials
+  - Books
+  - Official go.dev website
 
 ---
 
