@@ -18,21 +18,22 @@ go-tutorials/
         📃<topic-url>/
 
     head-first-go/
-        📝homework/     
+        📝01-homework/     
             xxx-ch/
-        📘lesson/       
+        📘02-lesson/       
             xxx-ch/
 
     nilchan-course/
-        📝homework/     
-            xxx-<topic>/
-        📘lesson/      
-            xxx-<topic>/
+        📃xx-ep/
+            📝01-homework/     
+                xxx-<topic>/
+            📘02-lesson/      
+                xxx-<topic>/
 ```
 
 - **lesson** - resourse lesson code
 - **homework** - resource exercises
-- **xxx-ch** - format of type '001', '002' and so on
+- **xxx** - format of type '001', '002' and so on
 - **topic** - resourse topic that author descibes
 
 ---
