@@ -3,7 +3,10 @@
 ## 📖 Description
 
 - This repository is for **personal learning**
-- It contains Go code while following video tutorials.
+- It contains Go code from:
+    1) Video tutorials
+    2) Books
+    3) Official go.dev website
 
 ---
 
@@ -11,10 +14,20 @@
 
 ``` bash
 go-tutorials/
-    <resource-name>/
-        📝homework/     - Resourse exercises
-        📘lesson/       - Resource lesson code
-        
+    go.dev/
+        📃<topic-url>/
+
+    head-first-go/
+        📝homework/     
+            xxx-ch/
+        📘lesson/       
+            xxx-ch/
+
+    nilchan-course/
+        📝homework/     
+            xxx-<topic>/
+        📘lesson/      
+            xxx-<topic>/
 ```
 
 ---
