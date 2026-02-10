@@ -18,7 +18,6 @@ func main() {
 		panic(err)
 	}
 
-	// select
 	if err := sql.ListPages(ctx, conn, 5); err != nil {
 		panic(err)
 	}
