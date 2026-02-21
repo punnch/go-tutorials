@@ -1,5 +1,5 @@
 CREATE TABLE workers (
     id SERIAL PRIMARY KEY,
-    fullName VARCHAR(100) NOT NULL UNIQUE,
+    full_name VARCHAR(100) NOT NULL UNIQUE,
     position VARCHAR(100) NOT NULL
 );

@@ -2,6 +2,7 @@ package dto
 
 import (
 	"encoding/json"
+	"errors"
 	"net/http"
 	"time"
 )
@@ -30,4 +31,14 @@ func (e ErrorDTO) ToString() string {
 func ErrorJSON(w http.ResponseWriter, err error, code int) {
 	errorDTO := NewErrorDTO(err.Error())
 	http.Error(w, errorDTO.ToString(), code)
+}
+
+func ErrorCompareJSON(w http.ResponseWriter, err, target error, code int) {
+	errorDTO := NewErrorDTO(err.Error())
+
+	if errors.Is(err, target) {
+		http.Error(w, errorDTO.ToString(), code)
+	} else {
+		http.Error(w, errorDTO.ToString(), http.StatusInternalServerError)
+	}
 }

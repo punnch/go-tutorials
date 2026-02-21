@@ -1,0 +1,1 @@
+ALTER TABLE workers DROP CONSTRAINT workers_full_name_key;
