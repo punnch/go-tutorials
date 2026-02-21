@@ -1,6 +1,7 @@
 package company
 
 type Employee struct {
+	ID       int
 	FullName string
 	Position string
 }

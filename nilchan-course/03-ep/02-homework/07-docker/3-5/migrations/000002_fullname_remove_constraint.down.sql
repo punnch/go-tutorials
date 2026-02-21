@@ -1,0 +1,1 @@
+ALTER TABLE workers ADD CONSTRAINT workers_full_name_key UNIQUE(full_name);

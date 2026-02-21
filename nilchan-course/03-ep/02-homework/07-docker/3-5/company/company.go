@@ -1,55 +1,48 @@
 package company
 
 import (
-	"maps"
-	"sync"
+	"context"
+	"errors"
+
+	"github.com/jackc/pgx/v5"
 )
 
 type Company struct {
-	Employees map[int]Employee
-	ID        int
-	mtx       sync.RWMutex
+	repo WorkerRepository
 }
 
-func NewCompany() *Company {
+func NewCompany(repo WorkerRepository) *Company {
 	return &Company{
-		Employees: make(map[int]Employee),
-		ID:        0,
+		repo: repo,
 	}
 }
 
-func (c *Company) CreateEmployee(fullName, position string) Employee {
+func (c *Company) CreateEmployee(ctx context.Context, fullName, position string) (Employee, error) {
 	employee := NewEmployee(fullName, position)
 
-	c.mtx.Lock()
-	defer c.mtx.Unlock()
+	employeeDB, err := c.repo.InsertRow(ctx, employee)
+	if err != nil {
+		return Employee{}, err
+	}
 
-	c.Employees[c.ID] = employee
-	c.ID++
-
-	return employee
+	return employeeDB, nil
 }
 
-func (c *Company) GetEmployees() map[int]Employee {
-	tmp := make(map[int]Employee)
+func (c *Company) GetEmployees(ctx context.Context) ([]Employee, error) {
+	employees, err := c.repo.SelectRows(ctx)
+	if err != nil {
+		return nil, err
+	}
 
-	c.mtx.RLock()
-	defer c.mtx.RUnlock()
-
-	maps.Copy(tmp, c.Employees)
-
-	return tmp
+	return employees, nil
 }
 
-func (c *Company) DeleteEmployee(id int) error {
-	if _, ok := c.Employees[id]; !ok {
+func (c *Company) DeleteEmployee(ctx context.Context, id int) error {
+	err := c.repo.DeleteRow(ctx, id)
+
+	if errors.Is(err, pgx.ErrNoRows) {
 		return ErrNotFound
 	}
 
-	c.mtx.Lock()
-	defer c.mtx.Unlock()
-
-	delete(c.Employees, id)
-
-	return nil
+	return err
 }
