@@ -3,6 +3,7 @@ export
 
 deploy-app:
 	docker compose up app
+
 undeploy-app:
 	docker compose down app
 
