@@ -1,0 +1,6 @@
+services:
+  app:
+    build: .
+    container_name: system-signals-app
+    environment:
+      - WORKERS_COUNT=${WORKERS_COUNT}
