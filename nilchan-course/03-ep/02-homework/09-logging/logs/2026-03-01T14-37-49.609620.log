@@ -1,0 +1,29 @@
+2026-03-01T17-37-54.607959	INFO	09-logging/main.go:41	'CreateString' endpoint with 'POST' method
+2026-03-01T17-37-54.608024	ERROR	09-logging/main.go:47	json: cannot unmarshal object into Go value of type string
+main.(*Handler).CreateString
+	/home/punnch/coding/git/public/go-tutorials/nilchan-course/03-ep/02-homework/09-logging/main.go:47
+net/http.HandlerFunc.ServeHTTP
+	/usr/lib/go/src/net/http/server.go:2286
+github.com/gorilla/mux.(*Router).ServeHTTP
+	/home/punnch/go/pkg/mod/github.com/gorilla/mux@v1.8.1/mux.go:212
+net/http.serverHandler.ServeHTTP
+	/usr/lib/go/src/net/http/server.go:3311
+net/http.(*conn).serve
+	/usr/lib/go/src/net/http/server.go:2073
+2026-03-01T17-37-54.608048	INFO	09-logging/main.go:38	Status code:400
+2026-03-01T17-38-23.044533	INFO	09-logging/main.go:41	'CreateString' endpoint with 'POST' method
+2026-03-01T17-38-23.044584	ERROR	09-logging/main.go:47	EOF
+main.(*Handler).CreateString
+	/home/punnch/coding/git/public/go-tutorials/nilchan-course/03-ep/02-homework/09-logging/main.go:47
+net/http.HandlerFunc.ServeHTTP
+	/usr/lib/go/src/net/http/server.go:2286
+github.com/gorilla/mux.(*Router).ServeHTTP
+	/home/punnch/go/pkg/mod/github.com/gorilla/mux@v1.8.1/mux.go:212
+net/http.serverHandler.ServeHTTP
+	/usr/lib/go/src/net/http/server.go:3311
+net/http.(*conn).serve
+	/usr/lib/go/src/net/http/server.go:2073
+2026-03-01T17-38-23.044608	INFO	09-logging/main.go:38	Status code:400
+2026-03-01T17-38-30.649207	INFO	09-logging/main.go:41	'CreateString' endpoint with 'POST' method
+2026-03-01T17-38-30.649253	INFO	09-logging/main.go:60	Slice length:1
+2026-03-01T17-38-30.649266	INFO	09-logging/main.go:38	Status code:201

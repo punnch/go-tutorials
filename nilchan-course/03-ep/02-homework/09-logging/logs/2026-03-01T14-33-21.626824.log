@@ -1,0 +1,21 @@
+2026-03-01T17-33-50.420920	INFO	09-logging/main.go:71	Request time:2026-03-01 17:33:50.420876846 +0300 MSK m=+28.794183672
+2026-03-01T17-33-50.420968	INFO	09-logging/main.go:84	'GetString' endpoint with 'GET' method
+2026-03-01T17-33-50.420992	INFO	09-logging/main.go:79	Response time:2026-03-01 17:33:50.420990681 +0300 MSK m=+28.794297506
+2026-03-01T17-33-50.420997	INFO	09-logging/main.go:80	Handler execution time:21.998µs
+2026-03-01T17-33-50.421003	INFO	09-logging/main.go:81	Status code:200
+2026-03-01T17-34-55.109427	INFO	09-logging/main.go:28	Request time:2026-03-01 17:34:55.109410193 +0300 MSK m=+93.482717019
+2026-03-01T17-34-55.109486	INFO	09-logging/main.go:41	'CreateString' endpoint with 'POST' method
+2026-03-01T17-34-55.109506	ERROR	09-logging/main.go:47	json: cannot unmarshal object into Go value of type string
+main.(*Handler).CreateString
+	/home/punnch/coding/git/public/go-tutorials/nilchan-course/03-ep/02-homework/09-logging/main.go:47
+net/http.HandlerFunc.ServeHTTP
+	/usr/lib/go/src/net/http/server.go:2286
+github.com/gorilla/mux.(*Router).ServeHTTP
+	/home/punnch/go/pkg/mod/github.com/gorilla/mux@v1.8.1/mux.go:212
+net/http.serverHandler.ServeHTTP
+	/usr/lib/go/src/net/http/server.go:3311
+net/http.(*conn).serve
+	/usr/lib/go/src/net/http/server.go:2073
+2026-03-01T17-34-55.109527	INFO	09-logging/main.go:36	Response time:2026-03-01 17:34:55.109526536 +0300 MSK m=+93.482833362
+2026-03-01T17-34-55.109534	INFO	09-logging/main.go:37	Handler execution time:40.14µs
+2026-03-01T17-34-55.109539	INFO	09-logging/main.go:38	Status code:400
